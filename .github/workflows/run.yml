@@ -1,4 +1,4 @@
-name: Check availability and create instance
+name: A1 Sniper
 
 on:
   workflow_dispatch:
