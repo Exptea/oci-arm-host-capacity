@@ -1,28 +1,33 @@
-name: A1 Sniper
+name: A1 Sniper Debug
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '*/5 * * * *'
 
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4 # Uses the newest version
+      - name: Checkout
+        uses: actions/checkout@v4
       
-      - name: Set up PHP
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-          # This line below forces it to NOT use the broken cache service
-          cache: none 
-          
-      - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist
+          tools: composer
 
-      - name: Run Sniper Script
+      - name: Verify Secrets are present
+        run: |
+          echo "Checking variables..."
+          if [ -z "${{ secrets.OCI_REGION }}" ]; then echo "REGION IS MISSING"; fi
+          if [ -z "${{ secrets.OCI_USER_OCID }}" ]; then echo "USER_OCID IS MISSING"; fi
+          if [ -z "${{ secrets.OCI_PRIVATE_KEY }}" ]; then echo "PRIVATE_KEY IS MISSING"; fi
+          if [ -z "${{ secrets.OCI_IMAGE_ID }}" ]; then echo "IMAGE_ID IS MISSING"; fi
+
+      - name: Install
+        run: composer install --no-interaction
+
+      - name: Snipe
         env:
           OCI_REGION: ${{ secrets.OCI_REGION }}
           OCI_USER_OCID: ${{ secrets.OCI_USER_OCID }}
