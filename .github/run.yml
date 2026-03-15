@@ -3,7 +3,7 @@ name: Check availability and create instance
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * *' # This keeps trying every 5 minutes
+    - cron: '*/5 * * * *' # Tries every 5 minutes
 
 jobs:
   run:
