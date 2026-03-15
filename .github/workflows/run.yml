@@ -1,9 +1,13 @@
 name: A1 Sniper
 
 on:
-  workflow_dispatch: # Allows you to start it manually
+  workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * *' # This is the "Magic" line that repeats it every 5 minutes
+    - cron: '*/5 * * * *' # Repeats every 5 minutes
+
+# This block fixes the Node.js 20 warning
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   run:
@@ -39,3 +43,4 @@ jobs:
           OCI_MEMORY_IN_GBS: 24
           OCI_BOOT_VOLUME_SIZE_IN_GBS: 50
         run: php index.php
+        
