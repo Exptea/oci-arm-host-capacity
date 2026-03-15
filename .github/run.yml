@@ -3,13 +3,13 @@ name: Check availability and create instance
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * *' # This runs it every 5 minutes
+    - cron: '*/5 * * * *' # This keeps trying every 5 minutes
 
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4 # Updated from v2
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -27,4 +27,3 @@ jobs:
           OCI_IMAGE_ID: ${{ secrets.OCI_IMAGE_ID }}
           OCI_SSH_PUBLIC_KEY: ${{ secrets.OCI_SSH_PUBLIC_KEY }}
         run: php index.php
-
