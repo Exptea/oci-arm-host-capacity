@@ -1,7 +1,9 @@
-name: A1 Sniper Debug
+name: A1 Sniper
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Allows you to start it manually
+  schedule:
+    - cron: '*/5 * * * *' # This is the "Magic" line that repeats it every 5 minutes
 
 jobs:
   run:
@@ -16,19 +18,10 @@ jobs:
           php-version: '8.3'
           tools: composer
 
-      - name: Verify Secrets are present
-        run: |
-          echo "Checking variables..."
-          if [ -z "${{ secrets.OCI_REGION }}" ]; then echo "REGION IS MISSING"; fi
-          if [ -z "${{ secrets.OCI_USER_OCID }}" ]; then echo "USER_OCID IS MISSING"; fi
-          if [ -z "${{ secrets.OCI_PRIVATE_KEY }}" ]; then echo "PRIVATE_KEY IS MISSING"; fi
-          if [ -z "${{ secrets.OCI_IMAGE_ID }}" ]; then echo "IMAGE_ID IS MISSING"; fi
-
-      - name: Install
+      - name: Install Dependencies
         run: composer install --no-interaction
 
       - name: Create Private Key File
-        # This takes your secret and turns it into a real file the script can see
         run: echo "${{ secrets.OCI_PRIVATE_KEY }}" > oci_api_key.pem
 
       - name: Snipe
@@ -41,8 +34,6 @@ jobs:
           OCI_SUBNET_ID: ${{ secrets.OCI_SUBNET_ID }}
           OCI_IMAGE_ID: ${{ secrets.OCI_IMAGE_ID }}
           OCI_SSH_PUBLIC_KEY: ${{ secrets.OCI_SSH_PUBLIC_KEY }}
-          
-          # ADD THESE TWO LINES BELOW:
           OCI_SHAPE: VM.Standard.A1.Flex
           OCI_OCPUS: 4
           OCI_MEMORY_IN_GBS: 24
