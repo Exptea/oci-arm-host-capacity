@@ -42,7 +42,7 @@ is a bit outdated regarding [Configuration](#configuration) but still can be use
 - [Multiple configuration support](#multiple-configuration-support)
 - [Conclusion](#conclusion)
 
-## Generating API key
+## Generating API keyyyy
 
 After logging in to [OCI Console](http://cloud.oracle.com/), click profile icon and then "User Settings"
 
